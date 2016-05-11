@@ -75,9 +75,9 @@ var NUM_HARMONICS = 50;
 
 // Returns the frequency in hz for a given pitch.
 // e.g. 'A' => 440
-var pitchFrequency = function(pitch) {
+var pitchFrequency = function(pitch, octave=1) {
   var normalizedPitch =  ENHARMONIC_EQUIVALENTS[pitch];
-  return MIDDLE_A_FREQUENCY * PITCH_RATIOS[normalizedPitch];
+  return MIDDLE_A_FREQUENCY * octave * PITCH_RATIOS[normalizedPitch];
 };
 
 // Play a tone with the given frequency in hz and duration in seconds,
@@ -96,7 +96,9 @@ var playTone = function(frequency, duration, audioContext) {
 
     var gain = audioContext.createGain();
     gain.gain.setValueAtTime(0.0, startTime);
-    gain.gain.linearRampToValueAtTime(10/i, startTime + 0.01);
+    //gain.gain.linearRampToValueAtTime(10/i, startTime + 0.01);
+    // volume
+    gain.gain.linearRampToValueAtTime(1/i, startTime + 0.01);
     gain.gain.linearRampToValueAtTime(0, startTime + duration * 0.75);
 
     osc.connect(gain);
@@ -154,7 +156,7 @@ var playSong = function(song, bpm, onComplete) {
   var playNextNote = function() {
     var note = song[currNote];
     var duration = note.beats / bps;
-    var frequency = pitchFrequency(note.pitch);
+    var frequency = pitchFrequency(note.pitch, note.octave);
 
     playTone(frequency, duration, jukeboxAudioContext);
 
@@ -176,24 +178,38 @@ var playSong = function(song, bpm, onComplete) {
 
 // parseNote
 //
-// Accepts a note string (e.g. "C#*2")
-// Returns a note object (e.g. {pitch: "C#", beats: 2}).
-// If a number of beats is not present, then it defaults to 1.
+// Accepts a note string (e.g. "C^2#*2")
+// Returns a note object (e.g. {pitch: "C#", octave: 2, beats: 2}).
+// If an octave is not present, then it defaults to 1.
+// If a number of beats is not present, then it defaults to 4.
 //
 var parseNote = function(string) {
   var parts = string.split('*');
-  var pitch = parts[0];
+  var pitch;
+  var octave;
   var beats;
 
+  // if nothing to the right of *, then beats is set to 4
   if (typeof parts[1] === "undefined") {
     beats = 4;
   } else {
     beats = parseInt(parts[1]);
   }
 
+  // split the left part of *
+  // if nothing is to the right of ^, then octave is set to 1
+  var parts2 = parts[0].split('^');
+  pitch = parts2[0];
+  if (typeof parts2[1] === "undefined")
+    octave = 1;
+  else {
+    octave = parseInt(parts2[1]);
+  }
+
   return {
     pitch: pitch,
-    beats: beats
+    beats: beats,
+    octave: octave
   };
 };
 

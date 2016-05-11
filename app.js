@@ -1,18 +1,36 @@
 var LIBRARY = [
-  {title: 'Happy Birthday', notes: 'D*2 D*2 E D G F# D*2 D*2 E D A F#' },
-  {title: 'C Major Scale', notes: 'A B C D E F G' },
-  {title: 'Chromatic Scale', notes: 'A A# B C C# D D# E F F# G G#' },
-  {title: 'Random Song', notes: 'A B*2 C D A*4 D E*2 F A B A A*2' },
-  {title: 'Adup Licate', notes: 'A B*2 C D A*4 D E*2 F A B A A*2' },
-  {title: 'Yankee Doodle', notes: 'C F*4 C F*4 B C D A*2 B*2 A B*2 C' },
-  {title: 'Descending Notes', notes: 'G F E D C B A G F E D C B A' }
+  {title: 'Happy Birthday One', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8'},
+  {title: 'Happy Birthday Two', notes: 'D*2 D*2 E*4 D*4 A^2*4 G*8'},
+  {title: 'Happy Birthday Three', notes: 'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8'},
+  {title: 'Happy Birthday Four', notes: 'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8'},
+  {title: 'Happy Birthday All', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8 ' +
+   'D*2 D*2 E*4 D*4 A^2*4 G*8 ' +
+   'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8 ' +
+   'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8' }
+
 ];
 
-var BPM = 600;
+var PLAYLIST = [
+  //  {title: 'Happy Birthday All', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8 ' +
+  //  'D*2 D*2 E*4 D*4 A^2*4 G*8 ' +
+  //  'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8 ' +
+  //  'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8' }
+];
+
+var BPM = 300;
 
 // Add a song with the given title and notes to the library.
 var addSongToLibrary = function(title, notes) {
   $('#library-list').append("<li>" +
+                                "<i class='fa fa-bars'></i>" +
+                                "<i class='fa fa-trash'></i>" +
+                                "<span class='title'>" + title + "</span>" +
+                                "<div class='notes'>" + notes + "</div>" +
+                              "</li>");
+};
+
+var addSongToPlaylist = function(title, notes) {
+  $('#playlist-list').append("<li>" +
                                 "<i class='fa fa-bars'></i>" +
                                 "<i class='fa fa-trash'></i>" +
                                 "<span class='title'>" + title + "</span>" +
@@ -25,6 +43,13 @@ var addSongToLibrary = function(title, notes) {
 var initializeLibrary = function() {
   for(var i=0; i < LIBRARY.length; i+=1) {
     addSongToLibrary(LIBRARY[i].title, LIBRARY[i].notes);
+  }
+};
+
+
+var initializePlaylist = function() {
+  for(var i=0; i < PLAYLIST.length; i+=1) {
+    addSongToPlaylist(PLAYLIST[i].title, PLAYLIST[i].notes);
   }
 };
 
@@ -114,7 +139,7 @@ var filterSongs = function () {
 $(document).ready(function() {
   // Initialize the library with some songs.
   initializeLibrary();
-  //$(".hidden").removeClass("hidden").hide();
+  initializePlaylist();
 
   // Play all songs in the playlist when the "play" button is clicked.
   $('#play-button').on('click', playAll);
@@ -132,7 +157,6 @@ $(document).ready(function() {
   // .container must exist when the document loads
   $("#library-list").on("dblclick", 'li', showLibraryListItemNotes);
 
-
   $('#message').fadeIn(800, waitAfterMessageFade);
 
   //$(".sortable").sortable();
@@ -148,4 +172,6 @@ $(document).ready(function() {
           return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
       };
   });
+
+
 });
