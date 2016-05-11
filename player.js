@@ -77,7 +77,16 @@ var NUM_HARMONICS = 50;
 // e.g. 'A' => 440
 var pitchFrequency = function(pitch, octave=1) {
   var normalizedPitch =  ENHARMONIC_EQUIVALENTS[pitch];
-  return MIDDLE_A_FREQUENCY * octave * PITCH_RATIOS[normalizedPitch];
+  if (octave >= 1)
+  {
+    return MIDDLE_A_FREQUENCY * octave * PITCH_RATIOS[normalizedPitch];
+  }
+  else if (octave <= -1)
+  {
+    console.log(1/(-octave));
+    return MIDDLE_A_FREQUENCY * (1/ (-octave) ) * PITCH_RATIOS[normalizedPitch];
+  }
+  return MIDDLE_A_FREQUENCY * PITCH_RATIOS[normalizedPitch];
 };
 
 // Play a tone with the given frequency in hz and duration in seconds,
@@ -97,7 +106,7 @@ var playTone = function(frequency, duration, audioContext) {
     var gain = audioContext.createGain();
     gain.gain.setValueAtTime(0.0, startTime);
     //gain.gain.linearRampToValueAtTime(10/i, startTime + 0.01);
-    // volume
+    // volume
     gain.gain.linearRampToValueAtTime(1/i, startTime + 0.01);
     gain.gain.linearRampToValueAtTime(0, startTime + duration * 0.75);
 
@@ -204,6 +213,7 @@ var parseNote = function(string) {
     octave = 1;
   else {
     octave = parseInt(parts2[1]);
+    //console.log(octave);
   }
 
   return {

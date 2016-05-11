@@ -1,16 +1,45 @@
+// README:
+// jukebox now has octave support
+// Example: G^-2*4 (G to the power of negative 2 * 4 beats)
+// In the example above, negative power of 2 means halving the frequency, so one octave lower
+// A is the middle frequency of 440, defined in player.js
+// Positive power of 2 means doubling the frequency, so one octave higher
+// default beat is 4, which is the quarter note
+// default BPM is 300, defined in this file
+// volume is controlled in player.js, by the first parameter of
+// gain.gain.linearRampToValueAtTime(1/i, startTime + 0.01);
+// To play, define a song in LIBRARY or PLAYLIST, and drag the song to PLAYLIST
+// and press 'Play all'
+
 var LIBRARY = [
   {title: 'Happy Birthday One', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8'},
   {title: 'Happy Birthday Two', notes: 'D*2 D*2 E*4 D*4 A^2*4 G*8'},
   {title: 'Happy Birthday Three', notes: 'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8'},
   {title: 'Happy Birthday Four', notes: 'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8'},
+
+  {title: 'Happy Birthday One Low', notes: 'D^-2*2 D^-2*2 E^-2*4 D^-2*4 G^-2*4 F#^-2*8'},
+  {title: 'Happy Birthday Two Low', notes: 'D^-2*2 D^-2*2 E^-2*4 D^-2*4 A*4 G^-2*8'},
+  {title: 'Happy Birthday Three Low', notes: 'D^-2*2 D^-2*2 D*4 B*4 G^-2*4 F#^-2*4 E^-2*8'},
+  {title: 'Happy Birthday Four Low', notes: 'C*2 C*2 B*4 G^-2*4 A*4 G^-2*8'},
+
+
   {title: 'Happy Birthday All', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8 ' +
    'D*2 D*2 E*4 D*4 A^2*4 G*8 ' +
    'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8 ' +
-   'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8' }
+   'C^2*2 C^2*2 B^2*4 G*4 A^2*4 G*8' },
+  {title: 'Happy Birthday All Low', notes: 'D^-2*2 D^-2*2 E^-2*4 D^-2*4 G^-2*4 F#^-2*8 ' +
+   'D^-2*2 D^-2*2 E^-2*4 D^-2*4 A*4 G^-2*8 ' +
+   'D^-2*2 D^-2*2 D*4 B*4 G^-2*4 F#^-2*4 E^-2*8 ' +
+   'C*2 C*2 B*4 G^-2*4 A*4 G^-2*8' }
 
 ];
 
 var PLAYLIST = [
+  {title: 'River Flow in You', notes: 'D^-2*1 F#^-2*1 D*2 C#*2 D*2 C#*2 D*2 A*2 D*2 G^-2*10 ' +
+  'D^-2*1 F#^-2*1 D*2 C#*2 D*2 C#*2 D*2 A*2 D*2 G^-2*10 ' +
+  'D^-2*1 F#^-2*1 D*2 C#*2 D*2 C#*2 D*2 A*2 D*2 G^-2*2 F#^-2*2 G^-2*2 A*2 F#^-2*2 E^-2-*10 ' +
+  'D^-2*1 C#^-2*1 D^-2*8 D^-2*1 E^-2*1 F#^-2*8 F#^-2*1 G^-2*1 A*8 G^-2*1 F#^-2*1 E^-2*10'
+  }
   //  {title: 'Happy Birthday All', notes: 'D*2 D*2 E*4 D*4 G*4 F#*8 ' +
   //  'D*2 D*2 E*4 D*4 A^2*4 G*8 ' +
   //  'D*2 D*2 D^2*4 B^2*4 G*4 F#*4 E*8 ' +
